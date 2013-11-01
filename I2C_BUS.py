@@ -3,6 +3,7 @@
 
 from ctypes import *
 from array import array
+from types import *
 
 version=""
 array_byte=c_ubyte*512
@@ -224,7 +225,10 @@ class i2c_bus:
 		self.__full_tx_buff.append(0x02)
 		self.__full_tx_buff.append(num_ch)
 		for i in range(sizeData):
-			self.__full_tx_buff.append(data[i])
+			if type(data[i]) is StringType:
+				self.__full_tx_buff.append(ord(data[i]))
+			else:	
+				self.__full_tx_buff.append(data[i])
 		
 		for j in range(len(self.__full_tx_buff)):
 			print 'TRANSMIT CMD byte[',j,']',self.__full_tx_buff[j]

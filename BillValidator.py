@@ -6,21 +6,26 @@ import math
 
 class bill_validator:
 	
-	def __init__(self,interface,addrDev,numch):
+	def __init__(self,interface,addrDev,numch,maxSum):
 		self.__interface=interface
-		self.__interface.set_settings_port(1,14,8)
+		#self.__interface.set_settings_port(numch,14,8)
 		self.__addrDev=addrDev
 		self.__numch=numch
 		self.denom_table=[]
 		self.cursum=0
-		self.maxsum=0
+		self.__maxsum=maxSum
 		self.__tx_mess=bytearray()
 		self.__rx_mess=bytearray()
 		self.isEnable=0
-		self.isDisable=0
+		self.inEnable=0
+		self.inDisable=0
 		print self.__interface
 		
-##==================================================================================================================	
+		
+		
+##############################################################################################################
+# Функция высчитывает контрольную сумму
+##############################################################################################################
 	
 	def calc_crc(self,data):
 		crc=0
@@ -33,7 +38,11 @@ class bill_validator:
 				else: crc >>=1
 		return crc
 		
-##==================================================================================================================
+		
+
+##############################################################################################################
+# Функция передает пакет данных купюроприемнику
+##############################################################################################################
 	
 	def __request(self,data):
 		print "BillValidator::__request()\n"
@@ -54,9 +63,11 @@ class bill_validator:
 			return -1
 		return 1
 		
-##==================================================================================================================
 		
 		
+##############################################################################################################
+# Функция перезагружает купюроприемник
+##############################################################################################################	
 		
 	def reset(self):
 		print '<BillValidator.reset()'
@@ -71,13 +82,24 @@ class bill_validator:
 			print 'BillValidator.reset()::Error : Can\'t get an answer.'
 			print '/BillValidator.reset()>'
 			return -1
+		
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.getStatus()::ILLEGAL COMMAND'
+			print '/BillValidator.reset()>'
+			return -1
 		print '/BillValidator.reset()>'
 		return answer
 
 
+
+##############################################################################################################
+# Функция получение статуса купюроприемника
+##############################################################################################################	
+
 	def getStatus(self):
 		print '<BillValidator.getStatus()'
 		
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x31])==-1):
 			print "BillValidator.getStatus()::Error : Can\'t transmit request."
 			print '/BillValidator.getStatus()>'
@@ -87,13 +109,23 @@ class bill_validator:
 			print 'BillValidator.getStatus()::Error : Can\'t get an answer.'
 			print '/BillValidator.getStatus()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.getStatus()::ILLEGAL COMMAND'
+			print '/BillValidator.getStatus()>'
+			return -1
 		print '/BillValidator.getStatus()>'
 		return answer
 			
 
+
+##############################################################################################################
+# Функция установки режима безопасности
+##############################################################################################################	
+
 	def setSecurity(self,y1,y2,y3):
 		print '<BillValidator.setSecurity()'
 		
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x31,y1,y2,y3])==-1):
 			print "BillValidator.setSecurity()::Error : Can\'t transmit request."
 			print '/BillValidator.setSecurity()>'
@@ -103,13 +135,26 @@ class bill_validator:
 			print 'BillValidator.setSecurity()::Error : Can\'t get an answer.'
 			print '/BillValidator.setSecurity()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.setSecurity()::ILLEGAL COMMAND'
+			print '/BillValidator.setSecurity()>'
+			return -1
 		print '/BillValidator.setSecurity()>'
 		return answer
 
 			
+
+##############################################################################################################
+# Функция разрешенния типа купюры
+##############################################################################################################	
+
 	def enable(self,y1,y2,y3,y4,y5,y6):
 		print '<BillValidator.enable()'
-		#self.wEnable=0
+		
+		self.inEnable=0
+		self.__interface.receive_req(self.__numch,2,0)
+		self.__isEnable=1
+		self.__inEnable=1
 		if(self.__request([0x34,y1,y2,y3,y4,y5,y6])==-1):
 			print "BillValidator.enable()::Error : Can\'t transmit request."
 			print '/BillValidator.enable()>'
@@ -119,14 +164,51 @@ class bill_validator:
 			print 'BillValidator.enable()::Error : Can\'t get an answer.'
 			print '/BillValidator.enable()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.enable()::ILLEGAL COMMAND'
+			print '/BillValidator.enable()>'
+			return -1
 		print '/BillValidator.enable()>'	
 		return answer
 		
+
+
+##############################################################################################################
+# Функция разрешенния типа купюры
+##############################################################################################################	
+
+	def disable(self):
+		print '<BillValidator.disable()'
 		
+		self.inDisable=0
+		self.__interface.receive_req(self.__numch,2,0)
+		self.__isEnable=0
+		self.__inDisable=1
+		if(self.__request([0x34,0,0,0,0,0,0])==-1):
+			print "BillValidator.disable()::Error : Can\'t transmit request."
+			print '/BillValidator.disable()>'
+			return -1
+		answer=self.getAnsw()
+		if(answer==-1):
+			print 'BillValidator.disable()::Error : Can\'t get an answer.'
+			print '/BillValidator.disable()>'
+			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.disable()::ILLEGAL COMMAND'
+			print '/BillValidator.disable()>'
+			return -1
+		print '/BillValidator.disable()>'	
+		return answer
+
+
+##############################################################################################################
+# Функция принятия купюры
+##############################################################################################################	
 		
 	def stack(self):
 		print '<BillValidator.stack()'
 		
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x35])==-1):
 			print "BillValidator.stack()::Error : Can\'t transmit request."
 			print '/BillValidator.stack()>'
@@ -136,13 +218,23 @@ class bill_validator:
 			print 'BillValidator.stack()::Error : Can\'t get an answer.'
 			print '/BillValidator.stack()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.stack()::ILLEGAL COMMAND'
+			print '/BillValidator.stack()>'
+			return -1
 		print '/BillValidator.stack()>'
 		return answer
 	
 	
-	def return_(self):
-		print '<BillValidator.return_()'	
 	
+##############################################################################################################
+# Функция возврата купюры
+##############################################################################################################	
+
+	def return_(self):
+		print '<BillValidator.return_()'
+
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x36])==-1):
 			print "BillValidator.return()::Error : Can\'t transmit request."
 			print '/BillValidator.return_()>'
@@ -152,9 +244,18 @@ class bill_validator:
 			print 'BillValidator.return()::Error : Can\'t get an answer.'
 			print '/BillValidator.return_()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.return_()::ILLEGAL COMMAND'
+			print '/BillValidator.return_()>'
+			return -1
 		print '/BillValidator.return_()>'
 		return answer
 	
+	
+	
+##############################################################################################################
+# Функция идентификации купюроприемника
+##############################################################################################################
 	
 	def identification(self):
 		print '<BillValidator.identification()'
@@ -169,13 +270,23 @@ class bill_validator:
 			print 'BillValidator.identification()::Error : Can\'t get an answer.'
 			print '/BillValidator.identification()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.identification()::ILLEGAL COMMAND'
+			print '/BillValidator.identification()>'
+			return -1
 		print '/BillValidator.identification()>'
 		return answer
 	
 	
+	
+##############################################################################################################
+# Функция удержания купюры в эскроу
+##############################################################################################################
+
 	def hold(self):
 		print '<BillValidator.hold()'
 	
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x38])==-1):
 			print "BillValidator.hold()::Error : Can\'t transmit request."
 			print '/BillValidator.hold()>'
@@ -185,13 +296,23 @@ class bill_validator:
 			print 'BillValidator.hold()::Error : Can\'t get an answer.'
 			print '/BillValidator.hold()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.hold()::ILLEGAL COMMAND'
+			print '/BillValidator.hold()>'
+			return -1
 		print '/BillValidator.hold()>'
 		return answer
 	
 	
+	
+##############################################################################################################
+# Функция установка параметров штрих кода
+##############################################################################################################
+
 	def setBarcodeParam(self,y1,y2):
 		print '<BillValidator.setBarcodeParam()'
 	
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x39,y1,y2])==-1):
 			print "BillValidator.setBarcodeParam()::Error : Can\'t transmit request."
 			print '/BillValidator.setBarcodeParam()>'
@@ -201,13 +322,23 @@ class bill_validator:
 			print 'BillValidator.setBarcodeParam()::Error : Can\'t get an answer.'
 			print '/BillValidator.setBarcodeParam()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.setBarcodeParam()::ILLEGAL COMMAND'
+			print '/BillValidator.setBarcodeParam()>'
+			return -1
 		print '/BillValidator.setBarcodeParam()>'
 		return answer
 	
 	
+
+##############################################################################################################
+# Функция 
+##############################################################################################################
+
 	def extrBarcodeData(self):
 		print '<BillValidator.extrBarcodeData()'
 	
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x3A])==-1):
 			print "BillValidator.extrBarcodeData()::Error : Can\'t transmit request."
 			print '/BillValidator.extrBarcodeData()>'
@@ -217,14 +348,25 @@ class bill_validator:
 			print 'BillValidator.extrBarcodeData()::Error : Can\'t get an answer.'
 			print '/BillValidator.extrBarcodeData()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.extrBarcodeData()::ILLEGAL COMMAND'
+			print '/BillValidator.extrBarcodeData()>'
+			return -1
 		print '/BillValidator.extrBarcodeData()>'
 		return answer
 	
+	
+	
+##############################################################################################################
+# Функция получения таблицы деноминаций купюроприемника
+##############################################################################################################
+
 	def getBillTable(self):
 		print '<BillValidator.getBillTable()'
 	
-		denomTable=[]
 		self.__interface.receive_req(self.__numch,2,0)
+		self.denom_table=[]
+		#self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x41])==-1):
 			print "BillValidator.getBillTable()::Error : Can\'t transmit request."
 			print '/BillValidator.getBillTable()>'
@@ -234,17 +376,28 @@ class bill_validator:
 			print 'BillValidator.extrBarcodeData()::Error : Can\'t get an answer.'
 			print '/BillValidator.getBillTable()>'
 			return -1
+		
+		if(len(res)==1 and res[0]==0x30):
+			print 'BillValidator.getStatus()::ILLEGAL COMMAND'
+			return -1
+			
 		for j in range(0,120,5):
 			value=res[j]*math.pow(10,res[j+4])
 			print 'self.__denomTable[',j/5,']	',value
-			denomTable.append(value)
+			self.denom_table.append(value)
 		print '/BillValidator.getBillTable()>'
-		return denomTable
+		return 1
 		
 	
+	
+##############################################################################################################
+# Функция получения контрольной суммы прошивки купюроприемника
+##############################################################################################################
+
 	def getCRC32(self):
 		print '<BillValidator.getCRC32()'
 		
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x51])==-1):
 			print "BillValidator.getCRC32()::Error : Can\'t transmit request."
 			print '/BillValidator.getCRC32()>'
@@ -254,13 +407,22 @@ class bill_validator:
 			print 'BillValidator.getCRC32()::Error : Can\'t get an answer.'
 			print '/BillValidator.getCRC32()>'
 			return -1
+		if(len(answer)==1 and answer[0]==0x30):
+			print 'BillValidator.getCRC32()::ILLEGAL COMMAND'
+			print '/BillValidator.getCRC32()>'
+			return -1
 		print '/BillValidator.getCRC32()>'
 		return answer
 		
-		
+	
+
+##############################################################################################################
+# Функция отпраки ACK пакета
+##############################################################################################################	
 	def sendACK(self):
 		print '<BillValidator.sendACK()'
 		
+		self.__interface.receive_req(self.__numch,2,0)
 		if(self.__request([0x00])==-1):
 			print "BillValidator.reset()::Error : Can\'t transmit request."
 			print '/BillValidator.sendACK()>'
@@ -268,6 +430,11 @@ class bill_validator:
 		print '/BillValidator.sendACK()>'
 		return 1
 		
+		
+		
+##############################################################################################################
+# Функция отправки NAK пакета
+##############################################################################################################
 		
 	def sendNAK(self):
 		print '<BillValidator.sendNAK()'
@@ -358,74 +525,116 @@ class bill_validator:
 		return -1
 		
 
+##############################################################################################################
+# Функция Пуллинга купюроприемника
+##############################################################################################################
 
 	def Poll(self):
-		self.__interface.receive_req(self.__numch,2,0)
+		print "<BillValidator.Poll()"
+	
+		self.__interface.receive_req(self.__numch,2,0)															# Очистка буфера приемника
 		if(self.__request([0x33])==-1):
-			raise ValueError("BillValidator.reset()::Error : Can\'t transmit request.")
+			print "BillValidator.reset()::Error : Can\'t transmit request."
+			return -1
 		answer=self.getAnsw()
 		if(answer==-1):
 			print 'BillValidator.Poll()::Error: Can\'t get an answer'
-			return
-		self.sendACK
+			return -1
 		z1=answer[0]
-		#z2=answer[1]
 		print "z1	=	",z1
-		#print "z2	=	",z2
 		if((z1==0x10) or (z1==0x11) or (z1==0x12)):
 			self.reset()
-			return
+			return 1
+			
 		if(z1==0x13):
-			print "Initialize"
-			self.identification()
-			self.getBillTable()
+			print "BillValidator.Poll::Initialize"
+			if(self.identification()==-1):
+				return -1
+			time.sleep(0.2)
+			if(self.getBillTable()==-1):
+				return -1
+			return 1
+			
+		if(z1==0x14):
+			if(self.inDisable==1):
+				self.disable()
+				print "BillValidator.Poll::Disable"
+			return 3
+			
+		if((z1==0x15) or (z1==0x17) or (z1==0x18)):
+			print "BillValidator.Poll::Enable"
 			return
-		if((z1==0x14) or (z1==0x15) or (z1==0x17) or (z1==0x18)):
-			print "Enable"
-			return
+			
 		if(z1==0x19):
-			print "Disable"
-			return
+			if(self.inEnable==1):
+				self.enable(0xff,0xff,0xff,0xff,0xff,0xff)
+				print "BillValidator.Poll::Enable"
+			return 1
+			
 		if(z1==0x1A):
-			print "Holding"
-			return
+			print "BillValidator.Poll::Holding"
+			return 1
+			
 		if(z1==0x1B):
-			print "Device Busy"
-			return
+			z2=answer[1]
+			print 'z2:',z2
+			print "BillValidator.Poll::Device Busy"
+			return 1
+			
 		if(z1==0x1C):
-			print "rejection"
-			return
+			z2=answer[1]
+			print 'z2:',z2
+			print "BillValidator.Poll::rejection"
+			return 1
+			
 		if(z1==0x41):
-			print "Drop Cassette Full"
-			return
+			print "BillValidator.Poll::Drop Cassette Full"
+			return 1
+			
 		if(z1==0x42):
-			print "Drop Cassette out of position"
-			return
+			print "BillValidator.Poll::Drop Cassette out of position"
+			return 1
+			
 		if(z1==0x43):
-			print "Validator Jammed"
-			return
+			print "BillValidator.Poll::Validator Jammed"
+			return 1
+			
 		if(z1==0x44):
-			print "Drop Cassette Jammed"
-			return
+			print "BillValidator.Poll::Drop Cassette Jammed"
+			return 1
+			
 		if(z1==0x45):
-			print "Cheated"
-			return
+			print "BillValidator.Poll::Cheated"
+			return 1
+			
 		if(z1==0x46):
-			print "Pause"
-			return
+			print "BillValidator.Poll::Pause"
+			return 1
+			
 		if(z1==0x47):
-			print "Failure"
-			return
+			z2=answer[1]
+			print 'z2:',z2
+			print "BillValidator.Poll::Failure"
+			return 1
+			
 		if(z1==0x80):
-			print "Escrow position"
+			z2=answer[1]
+			print 'z2:',z2
+			sum=self.denom_table[z2]
+			if((self.__isEnable==1) and (self.cursum+sum < self.__maxsum or self.cursum==0)):
+				self.stack()
+				self.cursum+=sum
+			else:
+				self.return_()
+			print "BillValidator.Poll::Escrow position"
 			return
 		if(z1==0x81):
-			print "Bill stacked"
+			print "BillValidator.Poll::Bill stacked"
 			return
 		if(z1==0x82):
-			print "Bill returned"
+			print "BillValidator.Poll::Bill returned"
 			return
-		#if(answer[3
+
 		
 	
 		

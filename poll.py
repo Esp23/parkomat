@@ -5,7 +5,7 @@ from BillValidator import *
 import time
 
 iface=i2c_bus("./config/lib/libi2c.so","/dev/i2c-1",4)
-billvalidator=bill_validator(iface,3,1)
+billvalidator=bill_validator(iface,3,1,500)
 billvalidator.Poll()
 time.sleep(1)
 billvalidator.stack()
