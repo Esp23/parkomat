@@ -19,7 +19,19 @@ KOI8_R_to_PC865=[
 0x8f,0x9f,0x90,0x91,0x92,0x93,0x86,0x82,0x9c,0x9b,0x87,0x98,0x9d,0x99,0x97,0x9a
 ]
 
-#===================================================================================================
+##############################################################################################################
+# Класс исключения 
+##############################################################################################################
+
+class parkomatError(Exception):
+	
+	def __init__(self,value):
+		self.value=value
+		
+	def __str__(self):
+		return repr(self.value)
+		
+		
 
 ##############################################################################################################
 # Класс паркомат
@@ -108,19 +120,21 @@ class parkomat:
 				print "максимальная принимаемая сумма",self.__max_sum									#
 				
 
-		self.__host=i2c_bus(self.__libName,self.__devName,self.__assignAddr)							# Создаем экземпляр класса I2C_BUS.py
+		self.__host=i2c_bus(self.__libName,self.__devName,self.__assignAddr)										# Создаем экземпляр класса I2C_BUS.py
 		
-		self.__billvalidator=bill_validator(self.__host,3,self.__numChBillValid,self.__max_sum)			# Создаем экземпляр класса BillValidator() купюроприемника
-		self.__billvalidator.reset()																	# И подаем команду reset 
+		self.__billvalidator=bill_validator(self.__host,3,self.__numChBillValid,self.__max_sum)						# Создаем экземпляр класса BillValidator() купюроприемника
+		if(self.__billvalidator.reset()==-1):																		# И подаем команду reset
+			raise parkomatError('Can\'t reset a bill validator.')
 		
-		if(not self.__host.set_settings_port(self.__numChPrinter,16,8)):								# Установка параметров порта принтера
-			print "parkomat.__config_system()::Error: can\'t set settings for printer port"				#
-		self.__host.transmit_req(self.__numChPrinter,[0x1b,0x4d,0x00],3)								# Установка таблицы кодировок принтера
+		if(self.__host.set_settings_port(self.__numChPrinter,16,8)==-1):											# Установка параметров порта принтера
+			raise parkomatError("parkomat.__config_system()::Error: can\'t set settings for printer port")			#
+		self.__host.transmit_req(self.__numChPrinter,[0x1b,0x4d,0x00],3)											# Установка таблицы кодировок принтера
 		
-		if(not self.__host.set_settings_port(self.__numChBillValid,14,8)):								# Установка параметров порта купюроприемника
-			print "parkomat.__config_system()::Error: can\'t set settings for bill validator port"		#
-		self.__host.transmit_req(6,[0x12,0x02],2)														# Установка кодировки дисплея см. протокол взаимодействия i2c-uart
-
+		if(self.__host.set_settings_port(self.__numChBillValid,14,8)==-1):											# Установка параметров порта купюроприемника
+			raise parkomatError("parkomat.__config_system()::Error: can\'t set settings for bill validator port")	#
+		
+		if(self.__host.transmit_req(6,[0x12,0x02],2)==-1):															# Установка кодировки дисплея см. протокол взаимодействия i2c-uart
+			raise parkomatError("parkomat.__config_system()::Error: can\'t set printer's character table")
 
 
 ##############################################################################################################
@@ -221,7 +235,7 @@ class parkomat:
 				else:																					#
 					self.__tx_buff.append(KOI8_R_to_PC865[ord(j)-0x80])									#
 					
-			if(not self.__host.transmit_req(2,self.__tx_buff,len(self.__tx_buff))):						# передаем данные в tx буффере в канал принтера
+			if(not self.__host.transmit_req(2,self.__tx_buff,len(self.__tx_buff))):						# передаем данные tx буффера в канал принтера
 				print "parkomat.print_ticket()::error transmit request."								# если ошибка возвращаем 0
 				return 0																				#
 				
@@ -244,38 +258,41 @@ class parkomat:
 	def receiving_bills(self):
 		self.__host.receive_req(6,2,0)																	# Очищаем буффер приемника канала купюроприемника
 		self.__cash=0																					#
-		self.__billvalidator.inEnable=1																	# Взводим флаг на разрешение работы купюроприемника
-		status=0
+		status=0																						# переменная состояния купюроприемника
 		while(1):																						# и запускаем пулинг купюроприемника
+		
+			time.sleep(0.2)																				# задержка в 200 мс
+			status=	self.__billvalidator.Poll()															#
+			if(status==-1):																				#
+				self.__billvalidator.sendNAK()															#
+				raise parkomatError('Error in Poll() command')
+			#elif(status=
+			self.__billvalidator.sendACK()																#
+			
+			if(status==self.__billvalidator.states.Unit_Disabled):										# проверяем статус если disabled даем команду enabled
+				self.__billvalidator.enable(0xff,0xff,0xff,0xff,0xff,0xff)								#
+				
+			if(status==self.__billvalidator.states.Idling):												# проверяем статус если Idling 
+				fl=self.__host.receive_req(6,1,1)														# проверяем не была ли нажата кнопка оплатить
+				if(fl!=-1):																				#
+					if(fl[0]==0 and fl[3]==ord('D')):													# если была нажата отключаем прием купюр
+						self.__billvalidator.disable()													# присваиваем переменной self.__cash принятую сумму       ??????????????????????????????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						if(self.__billvalidator.Poll()==-1):											# и возвращаем принятую сумму
+							self.__billvalidator.sendNAK()												#
+						self.__billvalidator.sendACK()													#
+						self.__billvalidator.cursum=0													#
+						return self.__cash	
+						
 			if(self.__cash!=self.__billvalidator.cursum):												#
 				self.__cash=self.__billvalidator.cursum													#
 				self.display('Внесенно-{}р.'.format(self.__cash))										#
-
-			if(status==3):
-				fl=self.__host.receive_req(6,1,1)															# проверяем не была ли нажата кнопка оплатить
-				if(fl!=-1):
-					if(fl[0]==0 and fl[3]==ord('D')):														# если была нажата отключаем прием купюр
-						self.__billvalidator.inDisable=1													# присваиваем переменной self.__cash принятую сумму       ??????????????????????????????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-						if(self.__billvalidator.Poll()==-1):												# и возвращаем принятую сумму
-							self.__billvalidator.sendNAK()													#
-						self.__billvalidator.sendACK()														#
-						self.__billvalidator.cursum=0														#
-						return self.__cash																	#
 				
-			time.sleep(0.2)																				#
-			if(self.__billvalidator.Poll()==-1):														#
-				self.__billvalidator.sendNAK()															#
-			self.__billvalidator.sendACK()																#
-			time.sleep(0.2)																				#
-			status=	self.__billvalidator.Poll()																						#
-			if(status==-1):														#
-				self.__billvalidator.sendNAK()															#
-			self.__billvalidator.sendACK()	
-		
-		
+				
+				
 ##############################################################################################################
 # Функция возвращает стоимость услуги в час
 ##############################################################################################################		
+
 	def get_hourly_rate(self):
 		return self.__hourly_rate
 
@@ -306,5 +323,7 @@ example=parkomat("./config/config.cfg")
 while(1):
 	example.display('Cтоим.усл.-{}р/ч'.format(example.get_hourly_rate()))
 	if(not example.receiving_bills()):
-		break
+		example.display('Внесите налич.\nи нажмите\nклавишу\'ввод\'')
+		time.sleep(3)
+		continue
 	example.print_ticket()

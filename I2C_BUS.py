@@ -44,8 +44,12 @@ class i2c_bus:
 		self.__size_tx_packet=0
 
 		self.dl=cdll.LoadLibrary(self.__lib_name)
-		self.dl.open_i2cbus(c_char_p(self.__dev_name),c_int(self.__assign_addr))
 		
+		fd=self.dl.open_i2cbus(c_char_p(self.__dev_name),c_int(self.__assign_addr))
+		if(fd==1):
+			raise IOError('Can\'t open I2C device driver')
+		elif(fd==2):
+			raise IOError('Can\'t assign device address')
 		
 
 ################################################################################
@@ -73,7 +77,7 @@ class i2c_bus:
 
 	def __fill_tx_packet(self,data,size):
 
-		print "<i2c_bus.__fill_tx_packet()"									#Заполнение self.__tx_buff буффера
+		print "<i2c_bus.__fill_tx_packet()"									# Заполнение self.__tx_buff буффера
 		self.size_tx_packet=size+5											#
 		self.__tx_buff[0]=0x02												#
 		self.__tx_buff[1]=(self.__count)&0x7f								#
@@ -81,11 +85,11 @@ class i2c_bus:
 		for i in range(size):												#
 			self.__tx_buff[3+i]=data[i]										#
 	
-		crc=self.__calc_crc(0xffff,self.__tx_buff,self.size_tx_packet-2)	#определение контрольной суммы пакета
+		crc=self.__calc_crc(0xffff,self.__tx_buff,self.size_tx_packet-2)	# определение контрольной суммы пакета
 		self.__tx_buff[self.size_tx_packet-2]=lo8(crc)						#
 		self.__tx_buff[self.size_tx_packet-1]=hi8(crc)						#
 	
-		for i in range(self.size_tx_packet):								#Вывод self.__tx_buff буффера на экран
+		for i in range(self.size_tx_packet):								# Вывод self.__tx_buff буффера на экран
 			print "FULL TX PACKET byte[",i,"]=",self.__tx_buff[i]			#
 		print "/i2c_bus.__fill_tx_packet()>"								#
 		
@@ -141,7 +145,7 @@ class i2c_bus:
 		self.bl_data=self.bl_rx_data()
 
 		if(not self.dl.read_from_i2cbus(self.rx_head,3)):											# читаем первые 3 байта если неудача возвращаем 0						
-			print "i2c_bus.__get_answ()::IO error."													#
+			print "i2c_bus.__get_answ()::IO error.Can\'t read data from device"						#
 			print "/i2c_bus.get_answ()>"															#
 			return 0																				#
 		

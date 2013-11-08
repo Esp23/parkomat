@@ -27,8 +27,8 @@ int open_i2cbus(const char *name,int addr)
 		return I2C_ERR_ASSIGN_ADDR;
 	}
 	printf("int open_i2cbus(%s,%i)\n",name,addr);
-	//return I2C_ERR_SUCCSESS;
-	return 1;
+	return I2C_ERR_SUCCSESS;
+	//return 1;
 }
 
 //===========================================================================================
