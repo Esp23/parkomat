@@ -274,7 +274,7 @@ class parkomat:
 				
 			if(status==self.__billvalidator.states.Idling):												# проверяем статус если Idling 
 				fl=self.__host.receive_req(6,1,1)														# проверяем не была ли нажата кнопка оплатить
-				if(fl!=-1):																				#
+				if(fl>0):																				#
 					if(fl[0]==0 and fl[3]==ord('D')):													# если была нажата отключаем прием купюр
 						self.__billvalidator.disable()													# присваиваем переменной self.__cash принятую сумму       ??????????????????????????????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 						if(self.__billvalidator.Poll()==-1):											# и возвращаем принятую сумму

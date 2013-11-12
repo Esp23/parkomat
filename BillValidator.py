@@ -56,8 +56,8 @@ class bill_validator:
 		self.denom_table=[]
 		self.cursum=0
 		self.__maxsum=maxSum
-		self.__tx_mess=bytearray()
-		self.__rx_mess=bytearray()
+		self.__tx_buff=bytearray()
+		self.__rx_buff=bytearray()
 		self.isEnable=0
 		self.inEnable=0
 		self.inDisable=0
@@ -90,19 +90,19 @@ class bill_validator:
 	def __request(self,data):
 		print "BillValidator::__request()\n"
 		
-		self.__tx_mess=bytearray()
-		self.__tx_mess.append(0x02)
-		self.__tx_mess.append(self.__addrDev)
-		self.__tx_mess.append(len(data)+5)
-		self.__tx_mess.extend(data)
-		crc=self.calc_crc(self.__tx_mess)
+		self.__tx_buff=bytearray()
+		self.__tx_buff.append(0x02)
+		self.__tx_buff.append(self.__addrDev)
+		self.__tx_buff.append(len(data)+5)
+		self.__tx_buff.extend(data)
+		crc=self.calc_crc(self.__tx_buff)
 		print crc
-		self.__tx_mess.append(crc%0x100)
-		self.__tx_mess.append((crc/0x100)&0xff)
-		for i in range(len(self.__tx_mess)):
-			print "BILL VALIDATOR CMD byte[",i,']',self.__tx_mess[i]
+		self.__tx_buff.append(crc%0x100)
+		self.__tx_buff.append((crc/0x100)&0xff)
+		for i in range(len(self.__tx_buff)):
+			print "BILL VALIDATOR CMD byte[",i,']',self.__tx_buff[i]
 		
-		if(self.__interface.transmit_req(self.__numch,self.__tx_mess,len(self.__tx_mess))==-1):
+		if(self.__interface.transmit_req(self.__numch,self.__tx_buff,len(self.__tx_buff))==-1):
 			return -1
 		return 1
 		
@@ -126,17 +126,17 @@ class bill_validator:
 			print '/BillValidator.reset()>'
 			return 2
 		
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.reset()::ILLEGAL COMMAND'
 			print '/BillValidator.reset()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.reset()::NAK received'
 			print '/BillValidator.reset()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.reset()::ACK received'
 			print '/BillValidator.reset()>'
 			return 0		
@@ -160,12 +160,12 @@ class bill_validator:
 			print 'BillValidator.getStatus()::Error : Can\'t get an answer.'
 			print '/BillValidator.getStatus()>'
 			return 2
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.getStatus()::ILLEGAL COMMAND'
 			print '/BillValidator.getStatus()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.getStatus()::NAK received'
 			print '/BillValidator.getStatus()>'
 			return 4
@@ -192,17 +192,17 @@ class bill_validator:
 			print '/BillValidator.setSecurity()>'
 			return 2
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.setSecurity()::ILLEGAL COMMAND'
 			print '/BillValidator.setSecurity()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.setSecurity()::NAK received'
 			print '/BillValidator.setSecurity()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.setSecurity()::ACK received'
 			print '/BillValidator.setSecurity()>'
 			return 0		
@@ -230,17 +230,17 @@ class bill_validator:
 			print '/BillValidator.enable()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.enable()::ILLEGAL COMMAND'
 			print '/BillValidator.enable()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.enable()::NAK received'
 			print '/BillValidator.enable()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.enable()::ACK received'
 			print '/BillValidator.enable()>'
 			return 0	
@@ -268,17 +268,17 @@ class bill_validator:
 			print '/BillValidator.disable()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.disable()::ILLEGAL COMMAND'
 			print '/BillValidator.disable()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.disable()::NAK received'
 			print '/BillValidator.disable()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.disable()::ACK received'
 			print '/BillValidator.disable()>'
 			return 0	
@@ -302,17 +302,17 @@ class bill_validator:
 			print '/BillValidator.stack()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.stack()::ILLEGAL COMMAND'
 			print '/BillValidator.stack()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.stack()::NAK received'
 			print '/BillValidator.stack()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.stack()::ACK received'
 			print '/BillValidator.stack()>'
 			return 0	
@@ -337,17 +337,17 @@ class bill_validator:
 			print '/BillValidator.return_()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.return_()::ILLEGAL COMMAND'
 			print '/BillValidator.return_()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.return_()::NAK received'
 			print '/BillValidator.return_()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.return_()::ACK received'
 			print '/BillValidator.return_()>'
 			return 0
@@ -373,12 +373,12 @@ class bill_validator:
 			print '/BillValidator.identification()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.identification()::ILLEGAL COMMAND'
 			print '/BillValidator.identification()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.identification()::NAK received'
 			print '/BillValidator.identification()>'
 			return 4
@@ -405,17 +405,17 @@ class bill_validator:
 			print '/BillValidator.hold()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.hold()::ILLEGAL COMMAND'
 			print '/BillValidator.hold()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.hold()::NAK received'
 			print '/BillValidator.return_()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.hold()::ACK received'
 			print '/BillValidator.hold()>'
 			return 0
@@ -440,17 +440,17 @@ class bill_validator:
 			print '/BillValidator.setBarcodeParam()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.setBarcodeParam()::ILLEGAL COMMAND'
 			print '/BillValidator.setBarcodeParam()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.setBarcodeParam()::NAK received'
 			print '/BillValidator.return_()>'
 			return 4
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x00):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x00):
 			print 'BillValidator.setBarcodeParam()::ACK received'
 			print '/BillValidator.setBarcodeParam()>'
 			return 0
@@ -475,12 +475,12 @@ class bill_validator:
 			print '/BillValidator.extrBarcodeData()>'
 			return 2
 
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.extrBarcodeData()::ILLEGAL COMMAND'
 			print '/BillValidator.extrBarcodeData()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.extrBarcodeData()::NAK received'
 			print '/BillValidator.extrBarcodeData()>'
 			return 4
@@ -509,18 +509,18 @@ class bill_validator:
 			print '/BillValidator.getBillTable()>'
 			return 2
 		
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.getBillTable()::ILLEGAL COMMAND'
 			print '/BillValidator.getBillTable()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.getBillTable()::NAK received'
 			print '/BillValidator.getBillTable()>'
 			return 4
 			
 		for j in range(0,120,5):
-			value=self.__rx_mess[3+j]*math.pow(10,self.__rx_mess[7+j])
+			value=self.__rx_buff[3+j]*math.pow(10,self.__rx_buff[7+j])
 			print 'self.__denomTable[',j/5,']	',value
 			self.denom_table.append(value)
 		print '/BillValidator.getBillTable()>'
@@ -545,12 +545,12 @@ class bill_validator:
 			print 'BillValidator.getCRC32()::Error : Can\'t get an answer.'
 			print '/BillValidator.getCRC32()>'
 			return 2
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0x30):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0x30):
 			print 'BillValidator.getCRC32()::ILLEGAL COMMAND'
 			print '/BillValidator.getCRC32()>'
 			return 3
 			
-		if(len(self.__rx_mess)==6 and self.__rx_mess[4]==0xff):
+		if(len(self.__rx_buff)==6 and self.__rx_buff[4]==0xff):
 			print 'BillValidator.getCRC32()::NAK received'
 			print '/BillValidator.getCRC32()>'
 			return 4
@@ -603,7 +603,7 @@ class bill_validator:
 	
 	def getAnsw(self):
 		print '<BillValidator.getAnsw()'
-		self.__rx_mess=[]
+		self.__rx_buff=[]
 		
 		startByte=self.get_byte(100)
 		if(startByte==-1):
@@ -615,7 +615,7 @@ class bill_validator:
 			print 'bill validator::getAnsw():not start byte'
 			print '/BillValidator.getAnsw()>'
 			return 2
-		self.__rx_mess.append(startByte)
+		self.__rx_buff.append(startByte)
 		
 		addrByte=self.get_byte(10)
 		if(startByte==-1):
@@ -626,14 +626,14 @@ class bill_validator:
 			print 'bill validator::getAnsw():error address'
 			print '/BillValidator.getAnsw()>'
 			return 3
-		self.__rx_mess.append(addrByte)
+		self.__rx_buff.append(addrByte)
 		
 		lenByte=self.get_byte(10)
 		if(startByte==-1):
 			print 'BillValidator.getAnsw(): Error getting byte()'
 			print '/BillValidator.getAnsw()>'
 			return 1
-		self.__rx_mess.append(lenByte)
+		self.__rx_buff.append(lenByte)
 		
 		time.sleep(lenByte*0.0005)
 		
@@ -641,8 +641,8 @@ class bill_validator:
 		if(respData==-1):
 			print 'BillValidator.getAnsw()::Error: can''t getting answer'
 			return 1
-		self.__rx_mess.extend(respData[3:])
-		crc=self.calc_crc(self.__rx_mess)
+		self.__rx_buff.extend(respData[3:])
+		crc=self.calc_crc(self.__rx_buff)
 		if(crc!=0):
 			print "BillValidator.getAnsw()::Error: Incorrect checksum"
 			print '/BillValidator.getAnsw()>'
@@ -663,15 +663,15 @@ class bill_validator:
 			rx_byte=self.__interface.receive_req(self.__numch,1,1)
 			if(rx_byte==-1):
 				print "BillValidator.get_byte():Error getting byte"
-				return -1
-			if(rx_byte[0]==0):
 				print "/BillValidator.get_byte()>"
-				return rx_byte[3]
-			else	:
+				return -1
+			if(rx_byte==-2):
 				print 'number error - ', rx_byte[0]
 				continue
-		print "/BillValidator.get_byte()>"
-		return -1
+			print "/BillValidator.get_byte()>"
+			return rx_byte[3]
+		
+		
 		
 
 ##############################################################################################################
@@ -689,7 +689,7 @@ class bill_validator:
 		if(res):
 			print 'BillValidator.Poll()::Error: Can\'t get an answer'
 			return -1
-		z1=self.__rx_mess[3]
+		z1=self.__rx_buff[3]
 		print "z1:=",z1
 		
 		if((z1==0x10) or (z1==0x11) or (z1==0x12)):
@@ -776,7 +776,7 @@ class bill_validator:
 			return self.states.Stack_Motor_Failure
 			
 		if(z1==0x80):
-			z2=self.__rx_mess[4]
+			z2=self.__rx_buff[4]
 			print z2
 			sum=self.denom_table[z2]
 			if((self.__isEnable==1) and (self.cursum+sum < self.__maxsum or self.cursum==0)):
@@ -787,7 +787,7 @@ class bill_validator:
 			return self.states.Escrow_position
 		if(z1==0x81):
 			print "BillValidator.Poll::Bill stacked"
-			z2=self.__rx_mess[4]
+			z2=self.__rx_buff[4]
 			print z2
 			self.cursum+=self.denom_table[z2]
 			return self.states.Bill_stacked
