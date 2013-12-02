@@ -1,0 +1,1453 @@
+parkomat.__config_system()
+стоимость стоянки в час 50
+полный путь до файла чека ./config/ticket/ticket.txt
+максимальная принимаемая сумма 500
+полный путь до библиотеки: ./config/lib/libi2c.so
+имя устройства /dev/i2c-1
+адрес устройства I2C 4
+номер канала купюроприемника 1
+Скорость порта купюроприемника 14
+номер канала принтера 2
+Скорость порта принтера 16
+fd - 4
+int open_i2cbus(/dev/i2c-1,4)
+<BillValidator.__configSystem()
+<host.set_settings_port()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 0
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 5
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 14
+FULL TX PACKET byte[ 6 ]= 8
+FULL TX PACKET byte[ 7 ]= 179
+FULL TX PACKET byte[ 8 ]= 7
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 3
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 0
+FULL RX PACKET byte[ 2 ] 1
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 235
+FULL RX PACKET byte[ 5 ] 32
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.set_settings_port()>
+/BillValidator.__configSystem()>
+<BillValidator.reset()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 1
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 0
+FULL TX PACKET byte[ 7 ]= 234
+FULL TX PACKET byte[ 8 ]= 109
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 1
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 1
+FULL RX PACKET byte[ 7 ] 30
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator::__request()
+45889
+BILL VALIDATOR CMD byte[ 0 ] 2
+BILL VALIDATOR CMD byte[ 1 ] 3
+BILL VALIDATOR CMD byte[ 2 ] 6
+BILL VALIDATOR CMD byte[ 3 ] 48
+BILL VALIDATOR CMD byte[ 4 ] 65
+BILL VALIDATOR CMD byte[ 5 ] 179
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 2
+FULL TX PACKET byte[ 2 ]= 8
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 3
+FULL TX PACKET byte[ 7 ]= 6
+FULL TX PACKET byte[ 8 ]= 48
+FULL TX PACKET byte[ 9 ]= 65
+FULL TX PACKET byte[ 10 ]= 179
+FULL TX PACKET byte[ 11 ]= 185
+FULL TX PACKET byte[ 12 ]= 47
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 13
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 2
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 77
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 211
+FULL RX PACKET byte[ 7 ] 245
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<BillValidator.getAnsw()
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 3
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 93
+FULL TX PACKET byte[ 8 ]= 94
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 3
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 1
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 2
+FULL RX PACKET byte[ 7 ] 211
+FULL RX PACKET byte[ 8 ] 80
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 4
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 140
+FULL TX PACKET byte[ 8 ]= 66
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 4
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 4
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 3
+FULL RX PACKET byte[ 7 ] 54
+FULL RX PACKET byte[ 8 ] 100
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 5
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 167
+FULL TX PACKET byte[ 8 ]= 70
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 5
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 3
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 6
+FULL RX PACKET byte[ 7 ] 181
+FULL RX PACKET byte[ 8 ] 187
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 6
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 3
+FULL TX PACKET byte[ 7 ]= 200
+FULL TX PACKET byte[ 8 ]= 105
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 8
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 6
+FULL RX PACKET byte[ 2 ] 6
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 0
+FULL RX PACKET byte[ 7 ] 194
+FULL RX PACKET byte[ 8 ] 130
+FULL RX PACKET byte[ 9 ] 240
+FULL RX PACKET byte[ 10 ] 103
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator.getAnsw()::OK
+/BillValidator.getAnsw()>
+BillValidator.reset()::ACK received
+/BillValidator.reset()>
+<Printer.__init__()
+<Printer.configPrinter()
+<host.set_settings_port()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 7
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 5
+FULL TX PACKET byte[ 4 ]= 2
+FULL TX PACKET byte[ 5 ]= 16
+FULL TX PACKET byte[ 6 ]= 8
+FULL TX PACKET byte[ 7 ]= 135
+FULL TX PACKET byte[ 8 ]= 251
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 3
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 7
+FULL RX PACKET byte[ 2 ] 1
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 238
+FULL RX PACKET byte[ 5 ] 172
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.set_settings_port()>
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 8
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 6
+FULL TX PACKET byte[ 5 ]= 18
+FULL TX PACKET byte[ 6 ]= 2
+FULL TX PACKET byte[ 7 ]= 164
+FULL TX PACKET byte[ 8 ]= 110
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 8
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 78
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 19
+FULL RX PACKET byte[ 7 ] 147
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 9
+FULL TX PACKET byte[ 2 ]= 3
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 6
+FULL TX PACKET byte[ 5 ]= 16
+FULL TX PACKET byte[ 6 ]= 200
+FULL TX PACKET byte[ 7 ]= 181
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 8
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 9
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 79
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 143
+FULL RX PACKET byte[ 7 ] 129
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 10
+FULL TX PACKET byte[ 2 ]= 18
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 6
+FULL TX PACKET byte[ 5 ]= 67
+FULL TX PACKET byte[ 6 ]= 212
+FULL TX PACKET byte[ 7 ]= 207
+FULL TX PACKET byte[ 8 ]= 201
+FULL TX PACKET byte[ 9 ]= 205
+FULL TX PACKET byte[ 10 ]= 46
+FULL TX PACKET byte[ 11 ]= 213
+FULL TX PACKET byte[ 12 ]= 211
+FULL TX PACKET byte[ 13 ]= 204
+FULL TX PACKET byte[ 14 ]= 46
+FULL TX PACKET byte[ 15 ]= 45
+FULL TX PACKET byte[ 16 ]= 53
+FULL TX PACKET byte[ 17 ]= 48
+FULL TX PACKET byte[ 18 ]= 210
+FULL TX PACKET byte[ 19 ]= 47
+FULL TX PACKET byte[ 20 ]= 222
+FULL TX PACKET byte[ 21 ]= 118
+FULL TX PACKET byte[ 22 ]= 234
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 23
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 10
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 64
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 139
+FULL RX PACKET byte[ 7 ] 31
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 11
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 6
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 0
+FULL TX PACKET byte[ 7 ]= 225
+FULL TX PACKET byte[ 8 ]= 200
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 11
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 169
+FULL RX PACKET byte[ 7 ] 82
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+<BillValidator.Poll()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 12
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 0
+FULL TX PACKET byte[ 7 ]= 53
+FULL TX PACKET byte[ 8 ]= 88
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 12
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 117
+FULL RX PACKET byte[ 7 ] 98
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator::__request()
+33242
+BILL VALIDATOR CMD byte[ 0 ] 2
+BILL VALIDATOR CMD byte[ 1 ] 3
+BILL VALIDATOR CMD byte[ 2 ] 6
+BILL VALIDATOR CMD byte[ 3 ] 51
+BILL VALIDATOR CMD byte[ 4 ] 218
+BILL VALIDATOR CMD byte[ 5 ] 129
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 13
+FULL TX PACKET byte[ 2 ]= 8
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 3
+FULL TX PACKET byte[ 7 ]= 6
+FULL TX PACKET byte[ 8 ]= 51
+FULL TX PACKET byte[ 9 ]= 218
+FULL TX PACKET byte[ 10 ]= 129
+FULL TX PACKET byte[ 11 ]= 101
+FULL TX PACKET byte[ 12 ]= 130
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 13
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 13
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 77
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 47
+FULL RX PACKET byte[ 7 ] 159
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<BillValidator.getAnsw()
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 14
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 130
+FULL TX PACKET byte[ 8 ]= 107
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 3
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 14
+FULL RX PACKET byte[ 2 ] 1
+FULL RX PACKET byte[ 3 ] 4
+FULL RX PACKET byte[ 4 ] 212
+FULL RX PACKET byte[ 5 ] 118
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+i2c_bus.receive_req()::Error code-4
+/i2c_bus.receive_req()>
+number error - 4
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 15
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 169
+FULL TX PACKET byte[ 8 ]= 111
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 15
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 5
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 2
+FULL RX PACKET byte[ 7 ] 70
+FULL RX PACKET byte[ 8 ] 2
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 16
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 144
+FULL TX PACKET byte[ 8 ]= 16
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 16
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 4
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 3
+FULL RX PACKET byte[ 7 ] 42
+FULL RX PACKET byte[ 8 ] 54
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 17
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 187
+FULL TX PACKET byte[ 8 ]= 20
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 17
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 3
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 6
+FULL RX PACKET byte[ 7 ] 169
+FULL RX PACKET byte[ 8 ] 233
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 18
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 3
+FULL TX PACKET byte[ 7 ]= 212
+FULL TX PACKET byte[ 8 ]= 59
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 8
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 18
+FULL RX PACKET byte[ 2 ] 6
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 19
+FULL RX PACKET byte[ 7 ] 216
+FULL RX PACKET byte[ 8 ] 160
+FULL RX PACKET byte[ 9 ] 86
+FULL RX PACKET byte[ 10 ] 42
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator.getAnsw()::OK
+/BillValidator.getAnsw()>
+z1:= 19
+BillValidator.Poll::Initialize
+<BillValidator.identification()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 19
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 0
+FULL TX PACKET byte[ 7 ]= 12
+FULL TX PACKET byte[ 8 ]= 39
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 19
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 201
+FULL RX PACKET byte[ 7 ] 188
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator::__request()
+51198
+BILL VALIDATOR CMD byte[ 0 ] 2
+BILL VALIDATOR CMD byte[ 1 ] 3
+BILL VALIDATOR CMD byte[ 2 ] 6
+BILL VALIDATOR CMD byte[ 3 ] 55
+BILL VALIDATOR CMD byte[ 4 ] 254
+BILL VALIDATOR CMD byte[ 5 ] 199
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 20
+FULL TX PACKET byte[ 2 ]= 8
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 3
+FULL TX PACKET byte[ 7 ]= 6
+FULL TX PACKET byte[ 8 ]= 55
+FULL TX PACKET byte[ 9 ]= 254
+FULL TX PACKET byte[ 10 ]= 199
+FULL TX PACKET byte[ 11 ]= 57
+FULL TX PACKET byte[ 12 ]= 21
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 13
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 20
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 77
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 11
+FULL RX PACKET byte[ 7 ] 122
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<BillValidator.getAnsw()
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 21
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 23
+FULL TX PACKET byte[ 8 ]= 4
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 3
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 21
+FULL RX PACKET byte[ 2 ] 1
+FULL RX PACKET byte[ 3 ] 4
+FULL RX PACKET byte[ 4 ] 231
+FULL RX PACKET byte[ 5 ] 218
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+i2c_bus.receive_req()::Error code-4
+/i2c_bus.receive_req()>
+number error - 4
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 22
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 106
+FULL TX PACKET byte[ 8 ]= 8
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 22
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 6
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 2
+FULL RX PACKET byte[ 7 ] 225
+FULL RX PACKET byte[ 8 ] 138
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 23
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 65
+FULL TX PACKET byte[ 8 ]= 12
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 23
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 13
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 3
+FULL RX PACKET byte[ 7 ] 229
+FULL RX PACKET byte[ 8 ] 182
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 24
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 200
+FULL TX PACKET byte[ 8 ]= 49
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 24
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 19
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 39
+FULL RX PACKET byte[ 7 ] 196
+FULL RX PACKET byte[ 8 ] 121
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 25
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 36
+FULL TX PACKET byte[ 7 ]= 76
+FULL TX PACKET byte[ 8 ]= 67
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 41
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 25
+FULL RX PACKET byte[ 2 ] 39
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 83
+FULL RX PACKET byte[ 7 ] 77
+FULL RX PACKET byte[ 8 ] 45
+FULL RX PACKET byte[ 9 ] 82
+FULL RX PACKET byte[ 10 ] 85
+FULL RX PACKET byte[ 11 ] 49
+FULL RX PACKET byte[ 12 ] 54
+FULL RX PACKET byte[ 13 ] 50
+FULL RX PACKET byte[ 14 ] 48
+FULL RX PACKET byte[ 15 ] 32
+FULL RX PACKET byte[ 16 ] 32
+FULL RX PACKET byte[ 17 ] 32
+FULL RX PACKET byte[ 18 ] 32
+FULL RX PACKET byte[ 19 ] 32
+FULL RX PACKET byte[ 20 ] 32
+FULL RX PACKET byte[ 21 ] 50
+FULL RX PACKET byte[ 22 ] 49
+FULL RX PACKET byte[ 23 ] 75
+FULL RX PACKET byte[ 24 ] 56
+FULL RX PACKET byte[ 25 ] 51
+FULL RX PACKET byte[ 26 ] 51
+FULL RX PACKET byte[ 27 ] 48
+FULL RX PACKET byte[ 28 ] 50
+FULL RX PACKET byte[ 29 ] 54
+FULL RX PACKET byte[ 30 ] 50
+FULL RX PACKET byte[ 31 ] 49
+FULL RX PACKET byte[ 32 ] 48
+FULL RX PACKET byte[ 33 ] 227
+FULL RX PACKET byte[ 34 ] 202
+FULL RX PACKET byte[ 35 ] 252
+FULL RX PACKET byte[ 36 ] 56
+FULL RX PACKET byte[ 37 ] 115
+FULL RX PACKET byte[ 38 ] 175
+FULL RX PACKET byte[ 39 ] 235
+FULL RX PACKET byte[ 40 ] 46
+FULL RX PACKET byte[ 41 ] 97
+FULL RX PACKET byte[ 42 ] 145
+FULL RX PACKET byte[ 43 ] 19
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator.getAnsw()::OK
+/BillValidator.getAnsw()>
+/BillValidator.identification()>
+<BillValidator.getBillTable()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 26
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 0
+FULL TX PACKET byte[ 7 ]= 127
+FULL TX PACKET byte[ 8 ]= 2
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 26
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 173
+FULL RX PACKET byte[ 7 ] 237
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator::__request()
+53583
+BILL VALIDATOR CMD byte[ 0 ] 2
+BILL VALIDATOR CMD byte[ 1 ] 3
+BILL VALIDATOR CMD byte[ 2 ] 6
+BILL VALIDATOR CMD byte[ 3 ] 65
+BILL VALIDATOR CMD byte[ 4 ] 79
+BILL VALIDATOR CMD byte[ 5 ] 209
+<host.transmit_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 27
+FULL TX PACKET byte[ 2 ]= 8
+FULL TX PACKET byte[ 3 ]= 2
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 2
+FULL TX PACKET byte[ 6 ]= 3
+FULL TX PACKET byte[ 7 ]= 6
+FULL TX PACKET byte[ 8 ]= 65
+FULL TX PACKET byte[ 9 ]= 79
+FULL TX PACKET byte[ 10 ]= 209
+FULL TX PACKET byte[ 11 ]= 229
+FULL TX PACKET byte[ 12 ]= 184
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 13
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 5
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 27
+FULL RX PACKET byte[ 2 ] 3
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 77
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 247
+FULL RX PACKET byte[ 7 ] 16
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.transmit_req()>
+<BillValidator.getAnsw()
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 28
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 100
+FULL TX PACKET byte[ 8 ]= 33
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 3
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 28
+FULL RX PACKET byte[ 2 ] 1
+FULL RX PACKET byte[ 3 ] 4
+FULL RX PACKET byte[ 4 ] 249
+FULL RX PACKET byte[ 5 ] 70
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+i2c_bus.receive_req()::Error code-4
+/i2c_bus.receive_req()>
+number error - 4
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 29
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 79
+FULL TX PACKET byte[ 8 ]= 37
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 29
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 6
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 2
+FULL RX PACKET byte[ 7 ] 196
+FULL RX PACKET byte[ 8 ] 167
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 30
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 50
+FULL TX PACKET byte[ 8 ]= 41
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 30
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 12
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 3
+FULL RX PACKET byte[ 7 ] 74
+FULL RX PACKET byte[ 8 ] 201
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<BillValidator.get_byte()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 31
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 1
+FULL TX PACKET byte[ 7 ]= 25
+FULL TX PACKET byte[ 8 ]= 45
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 6
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 31
+FULL RX PACKET byte[ 2 ] 4
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 19
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 125
+FULL RX PACKET byte[ 7 ] 202
+FULL RX PACKET byte[ 8 ] 152
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+/BillValidator.get_byte()>
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 32
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FULL TX PACKET byte[ 4 ]= 1
+FULL TX PACKET byte[ 5 ]= 1
+FULL TX PACKET byte[ 6 ]= 122
+FULL TX PACKET byte[ 7 ]= 20
+FULL TX PACKET byte[ 8 ]= 26
+/i2c_bus.__fill_tx_packet()>
+int write_to_i2cbus()::count write byte : 9
+int write_to_i2cbus()::ok
+<i2c_bus.get_answ()
+int read_from_i2cbus()::count read byte : 3
+int read_from_i2cbus()::count read byte : 127
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL RX PACKET byte[ 0 ] 2
+FULL RX PACKET byte[ 1 ] 32
+FULL RX PACKET byte[ 2 ] 125
+FULL RX PACKET byte[ 3 ] 0
+FULL RX PACKET byte[ 4 ] 0
+FULL RX PACKET byte[ 5 ] 0
+FULL RX PACKET byte[ 6 ] 0
+FULL RX PACKET byte[ 7 ] 0
+FULL RX PACKET byte[ 8 ] 0
+FULL RX PACKET byte[ 9 ] 0
+FULL RX PACKET byte[ 10 ] 0
+FULL RX PACKET byte[ 11 ] 0
+FULL RX PACKET byte[ 12 ] 0
+FULL RX PACKET byte[ 13 ] 0
+FULL RX PACKET byte[ 14 ] 0
+FULL RX PACKET byte[ 15 ] 0
+FULL RX PACKET byte[ 16 ] 1
+FULL RX PACKET byte[ 17 ] 82
+FULL RX PACKET byte[ 18 ] 85
+FULL RX PACKET byte[ 19 ] 83
+FULL RX PACKET byte[ 20 ] 1
+FULL RX PACKET byte[ 21 ] 5
+FULL RX PACKET byte[ 22 ] 82
+FULL RX PACKET byte[ 23 ] 85
+FULL RX PACKET byte[ 24 ] 83
+FULL RX PACKET byte[ 25 ] 1
+FULL RX PACKET byte[ 26 ] 1
+FULL RX PACKET byte[ 27 ] 82
+FULL RX PACKET byte[ 28 ] 85
+FULL RX PACKET byte[ 29 ] 83
+FULL RX PACKET byte[ 30 ] 2
+FULL RX PACKET byte[ 31 ] 5
+FULL RX PACKET byte[ 32 ] 82
+FULL RX PACKET byte[ 33 ] 85
+FULL RX PACKET byte[ 34 ] 83
+FULL RX PACKET byte[ 35 ] 2
+FULL RX PACKET byte[ 36 ] 1
+FULL RX PACKET byte[ 37 ] 82
+FULL RX PACKET byte[ 38 ] 85
+FULL RX PACKET byte[ 39 ] 83
+FULL RX PACKET byte[ 40 ] 3
+FULL RX PACKET byte[ 41 ] 5
+FULL RX PACKET byte[ 42 ] 82
+FULL RX PACKET byte[ 43 ] 85
+FULL RX PACKET byte[ 44 ] 83
+FULL RX PACKET byte[ 45 ] 3
+FULL RX PACKET byte[ 46 ] 0
+FULL RX PACKET byte[ 47 ] 0
+FULL RX PACKET byte[ 48 ] 0
+FULL RX PACKET byte[ 49 ] 0
+FULL RX PACKET byte[ 50 ] 0
+FULL RX PACKET byte[ 51 ] 0
+FULL RX PACKET byte[ 52 ] 0
+FULL RX PACKET byte[ 53 ] 0
+FULL RX PACKET byte[ 54 ] 0
+FULL RX PACKET byte[ 55 ] 0
+FULL RX PACKET byte[ 56 ] 0
+FULL RX PACKET byte[ 57 ] 0
+FULL RX PACKET byte[ 58 ] 0
+FULL RX PACKET byte[ 59 ] 0
+FULL RX PACKET byte[ 60 ] 0
+FULL RX PACKET byte[ 61 ] 0
+FULL RX PACKET byte[ 62 ] 0
+FULL RX PACKET byte[ 63 ] 0
+FULL RX PACKET byte[ 64 ] 0
+FULL RX PACKET byte[ 65 ] 0
+FULL RX PACKET byte[ 66 ] 0
+FULL RX PACKET byte[ 67 ] 0
+FULL RX PACKET byte[ 68 ] 0
+FULL RX PACKET byte[ 69 ] 0
+FULL RX PACKET byte[ 70 ] 0
+FULL RX PACKET byte[ 71 ] 0
+FULL RX PACKET byte[ 72 ] 0
+FULL RX PACKET byte[ 73 ] 0
+FULL RX PACKET byte[ 74 ] 0
+FULL RX PACKET byte[ 75 ] 0
+FULL RX PACKET byte[ 76 ] 0
+FULL RX PACKET byte[ 77 ] 0
+FULL RX PACKET byte[ 78 ] 0
+FULL RX PACKET byte[ 79 ] 0
+FULL RX PACKET byte[ 80 ] 0
+FULL RX PACKET byte[ 81 ] 0
+FULL RX PACKET byte[ 82 ] 0
+FULL RX PACKET byte[ 83 ] 0
+FULL RX PACKET byte[ 84 ] 0
+FULL RX PACKET byte[ 85 ] 0
+FULL RX PACKET byte[ 86 ] 0
+FULL RX PACKET byte[ 87 ] 0
+FULL RX PACKET byte[ 88 ] 0
+FULL RX PACKET byte[ 89 ] 0
+FULL RX PACKET byte[ 90 ] 0
+FULL RX PACKET byte[ 91 ] 0
+FULL RX PACKET byte[ 92 ] 0
+FULL RX PACKET byte[ 93 ] 0
+FULL RX PACKET byte[ 94 ] 0
+FULL RX PACKET byte[ 95 ] 0
+FULL RX PACKET byte[ 96 ] 0
+FULL RX PACKET byte[ 97 ] 0
+FULL RX PACKET byte[ 98 ] 0
+FULL RX PACKET byte[ 99 ] 0
+FULL RX PACKET byte[ 100 ] 0
+FULL RX PACKET byte[ 101 ] 0
+FULL RX PACKET byte[ 102 ] 0
+FULL RX PACKET byte[ 103 ] 0
+FULL RX PACKET byte[ 104 ] 0
+FULL RX PACKET byte[ 105 ] 0
+FULL RX PACKET byte[ 106 ] 0
+FULL RX PACKET byte[ 107 ] 0
+FULL RX PACKET byte[ 108 ] 0
+FULL RX PACKET byte[ 109 ] 0
+FULL RX PACKET byte[ 110 ] 0
+FULL RX PACKET byte[ 111 ] 0
+FULL RX PACKET byte[ 112 ] 0
+FULL RX PACKET byte[ 113 ] 0
+FULL RX PACKET byte[ 114 ] 0
+FULL RX PACKET byte[ 115 ] 0
+FULL RX PACKET byte[ 116 ] 0
+FULL RX PACKET byte[ 117 ] 0
+FULL RX PACKET byte[ 118 ] 0
+FULL RX PACKET byte[ 119 ] 0
+FULL RX PACKET byte[ 120 ] 0
+FULL RX PACKET byte[ 121 ] 1
+FULL RX PACKET byte[ 122 ] 66
+FULL RX PACKET byte[ 123 ] 65
+FULL RX PACKET byte[ 124 ] 82
+FULL RX PACKET byte[ 125 ] 0
+FULL RX PACKET byte[ 126 ] 28
+FULL RX PACKET byte[ 127 ] 128
+FULL RX PACKET byte[ 128 ] 142
+FULL RX PACKET byte[ 129 ] 86
+/i2c_bus.get_answ()>
+i2c_bus.transaction()::Answer is valid.
+/i2c_bus.transaction()>
+/host.receive_req()>
+BillValidator.getAnsw()::OK
+/BillValidator.getAnsw()>
+self.__denomTable[ 0 ]	0.0
+self.__denomTable[ 1 ]	0.0
+self.__denomTable[ 2 ]	10.0
+self.__denomTable[ 3 ]	50.0
+self.__denomTable[ 4 ]	100.0
+self.__denomTable[ 5 ]	500.0
+self.__denomTable[ 6 ]	1000.0
+self.__denomTable[ 7 ]	5000.0
+self.__denomTable[ 8 ]	0.0
+self.__denomTable[ 9 ]	0.0
+self.__denomTable[ 10 ]	0.0
+self.__denomTable[ 11 ]	0.0
+self.__denomTable[ 12 ]	0.0
+self.__denomTable[ 13 ]	0.0
+self.__denomTable[ 14 ]	0.0
+self.__denomTable[ 15 ]	0.0
+self.__denomTable[ 16 ]	0.0
+self.__denomTable[ 17 ]	0.0
+self.__denomTable[ 18 ]	0.0
+self.__denomTable[ 19 ]	0.0
+self.__denomTable[ 20 ]	0.0
+self.__denomTable[ 21 ]	0.0
+self.__denomTable[ 22 ]	0.0
+self.__denomTable[ 23 ]	1.0
+/BillValidator.getBillTable()>
+<BillValidator.sendACK()
+<host.receive_req()
+<i2c_bus.transaction()
+<i2c_bus.__fill_tx_packet()
+<i2c_bus.__calc_crc()
+/i2c_bus.__calc_crc()>
+FULL TX PACKET byte[ 0 ]= 2
+FULL TX PACKET byte[ 1 ]= 33
+FULL TX PACKET byte[ 2 ]= 4
+FULL TX PACKET byte[ 3 ]= 3
+FU

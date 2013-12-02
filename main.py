@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 from I2C_BUS import *
 from BillValidator import *
+from Printer import *
 from PIL import Image
 import qrcode 
 
 
 #===================================================================================================
-
+# Таблица приведения кодировки koi8-r к кодировке Pc437
+#===================================================================================================
 KOI8_R_to_PC865=[
 0xC4,0xb3,0xDA,0xBF,0xc0,0xd9,0xc3,0xb4,0xc2,0xc1,0xc5,0xdf,0xdc,0xdb,0xdd,0xde,
 0xb0,0xb1,0xb2,0xf4,0xff,0xf9,0xfb,0xf7,0xf3,0xf2,0xff,0xf5,0xf8,0xfd,0xfa,0xf6,
@@ -27,7 +29,6 @@ class parkomatError(Exception):
 	
 	def __init__(self,value):
 		self.value=value
-		
 	def __str__(self):
 		return repr(self.value)
 		
@@ -39,24 +40,37 @@ class parkomatError(Exception):
 class parkomat:
 	
 	def __init__(self,configFile):
-		self.__billvalidator=0																			# Переменная для хранения экземпляра класса купюроприемника
-		self.__host=0																					# Переменная для хранения экземпляра класса шины I2C
-		self.__tx_buff=[]																				# tx Буффер
-		self.__qr=0																						# Переменная для хранения экземпляра класса QRcode
-		self.__libName=""																				# Переменная содержащая путь к библиотеке libi2c.so
-		self.__devName=""																				# Переменная содержащая имя драйвера шины I2C
-		self.__assignAddr=0																				# Переменная содержащая адрес устройства на шине I2C
+	
 		self.__config_File=configFile																	# Переменная содержащая путь и имя файла конфигурации
+		self.__tx_buff=[]																				# tx Буффер
 		self.__ticket=[]																				# Массив содержащий данные чека 
 		self.__img_data=[]																				# Массив содержащий данные qr кода
 		self.__ticket_File=""																			# Переменная содержащая путь и имя файла чека	
-		self.__cash=0																					# Переменная содержащяя внесенную сумму последнего сеанса
 		self.__hourly_rate=0																			# Переменная храняшая стоимость одного часа стоянки
 		self.__period=0																					# Переменная хранящая количество оплаченных часов
-		self.__config_system()																			# функция настройки системы				
-		self.__numChPrinter=0																			# Номер канала принтера
+		self.__cash=0																					# Переменная содержащяя внесенную сумму последнего сеанса
+		self.__max_sum=0																				# Максимальная сумма принимаемая паркоматом
+		self.__qr=0																						# Переменная для хранения экземпляра класса QRcode
+		self.ticketID=0																					# Id чека
+		self.numTerm=''																					# Номер терминала
+		
+		self.__host=0																					# Переменная для хранения экземпляра класса шины I2C
+		self.__libName=""																				# Переменная содержащая путь к библиотеке libi2c.so
+		self.__devName=""																				# Переменная содержащая имя драйвера шины I2C
+		self.__assignAddr=0																				# Переменная содержащая адрес устройства на шине I2C
+
+		self.__billvalidator=0																			# Переменная для хранения экземпляра класса купюроприемника
 		self.__numChBillValid=0																			# Номер канала купюроприемника	
-		self.__max_sum=0
+		self.__spdBillValid=0																			# Скорость передачи данных по последвоательному порту купюроприемника
+
+		self.__printer=0																				# Переменная для хранения экземпляра класса принтера
+		self.__numChPrinter=0																			# Номер канала принтера
+		self.__spdPrinter=0																				# Скорость передачи данных по последвоательному порту принтера
+		
+		self.__config_system()																			# функция настройки системы				
+		
+		
+		
 
 
 ##############################################################################################################
@@ -70,71 +84,84 @@ class parkomat:
 		for line in fd:																					# Читаем построчно файл конфигурации
 			if(line[0]=='#'):
 				continue
-				
-			if(line.find("hourly rate")!=-1):															# Если содержит строку 'hourly_rate' извлекаем данные стоимости одного часа стоянки
-				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#														
-				self.__hourly_rate=int(line[start:end].strip(''))										#					
-				print 'стоимость стоянки в час',self.__hourly_rate										#
 			
 			if(line.find("ticket file")!=-1):															# Если содержит строку 'ticket_file' извлекаем данные пути и имени файла чека
 				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#
+				end=line.find(";",start)																#
 				self.__ticket_File=line[start:end].strip()												#
 				print 'полный путь до файла чека',self.__ticket_File									#
-				
-			if(line.find("library")!=-1):																# Если содержит строку 'library' извлекаем данные пути и имени библиотеки шины I2C
+
+			if(line.find("hourly rate")!=-1):															# Если содержит строку 'hourly_rate' извлекаем данные стоимости одного часа стоянки
 				start=line.find("-")+1																	#
-				end=line.find("-",start)																#
-				self.__libName=line[start:end].strip()													#
-				print "полный путь до библиотеки:",self.__libName										#
-		
-			if(line.find("address")!=-1):																# Если содержит строку 'address' извлекаем адрес устройства I2C
-				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#
-				self.__assignAddr=int(line[start:end].strip())											#
-				print 'адрес устройства I2C',self.__assignAddr											#
-				
-			if(line.find("device")!=-1):																# Если содержит строку 'device' извлекаем имя драйвера устройства I2C
-				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#
-				self.__devName=line[start:end].strip()													#
-				print 'имя устройства',self.__devName													#
-				
-			if(line.find("printer channel")!=-1):														# Если содержит строку 'printer channel' извлекаем номер канала принтера
-				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#
-				self.__numChPrinter=int(line[start:end].strip())										#
-				print "номер канала принтера",self.__numChPrinter										#
-				
-			if(line.find("bill validator channel")!=-1):												# Если содержит строку 'bill validator channel' извлекаем номер канала купюроприемника
-				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#
-				self.__numChBillValid=int(line[start:end].strip())										#
-				print "номер канала купюроприемника",self.__numChBillValid								#
+				end=line.find(";",start)																#														
+				self.__hourly_rate=int(line[start:end].strip())										    #					
+				print 'стоимость стоянки в час',self.__hourly_rate										#
 				
 			if(line.find("max sum")!=-1):																# Если содержит строку 'max sum' извлекаем максимальное значения принимаемой суммы за сеанс
 				start=line.find("-")+1																	#
-				end=line.find(" ",start)																#
+				end=line.find(";",start)																#
 				self.__max_sum=int(line[start:end].strip())												#
 				print "максимальная принимаемая сумма",self.__max_sum									#
 				
+			if(line.find("numTerm")!=-1):																# Если содержит строку 'numTerm' извлекаем строку номера терминала
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.numTernm=line[start:end].strip()													#
+				print "Номер терминала",self.numTerm													#	
+			
+			if(line.find("library")!=-1):																# Если содержит строку 'library' извлекаем данные пути и имени библиотеки шины I2C
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__libName=line[start:end].strip()													#
+				print "полный путь до библиотеки:",self.__libName										#
+		
+			if(line.find("device")!=-1):																# Если содержит строку 'device' извлекаем имя драйвера устройства I2C
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__devName=line[start:end].strip()													#
+				print 'имя устройства',self.__devName													#
+
+			if(line.find("address")!=-1):																# Если содержит строку 'address' извлекаем адрес устройства I2C
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__assignAddr=int(line[start:end].strip())											#
+				print 'адрес устройства I2C',self.__assignAddr											#
+
+			if(line.find("bill validator channel")!=-1):												# Если содержит строку 'bill validator channel' извлекаем номер канала купюроприемника
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__numChBillValid=int(line[start:end].strip())										#
+				print "номер канала купюроприемника",self.__numChBillValid								#	
+				
+			if(line.find("billValidatorSpeed")!=-1):													# Если содержит строку 'billValidatorSpeed' извлекаем  значение скорости порта купюроприемника
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__spdBillValid=int(line[start:end].strip())										#
+				print "Скорость порта купюроприемника",self.__spdBillValid								#
+				
+			if(line.find("printer channel")!=-1):														# Если содержит строку 'printer channel' извлекаем номер канала принтера
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__numChPrinter=int(line[start:end].strip())										#
+				print "номер канала принтера",	self.__numChPrinter										#
+				
+			if(line.find("printerSpeed")!=-1):															# Если содержит строку 'printerSpeed' извлекаем  значение скорости порта принтера
+				start=line.find("-")+1																	#
+				end=line.find(";",start)																#
+				self.__spdPrinter=int(line[start:end].strip())											#
+				print "Скорость порта принтера",self.__spdPrinter										#
+				
 
 		self.__host=i2c_bus(self.__libName,self.__devName,self.__assignAddr)										# Создаем экземпляр класса I2C_BUS.py
-		
-		self.__billvalidator=bill_validator(self.__host,3,self.__numChBillValid,self.__max_sum)						# Создаем экземпляр класса BillValidator() купюроприемника
-		if(self.__billvalidator.reset()==-1):																		# И подаем команду reset
+			
+		self.__billvalidator=bill_validator(self.__host,3,self.__numChBillValid,self.__spdBillValid,self.__max_sum)	# Создаем экземпляр класса BillValidator() купюроприемника
+		if(self.__billvalidator.reset()<0):																			# И подаем команду reset
 			raise parkomatError('Can\'t reset a bill validator.')
-		
-		if(self.__host.set_settings_port(self.__numChPrinter,16,8)==-1):											# Установка параметров порта принтера
-			raise parkomatError("parkomat.__config_system()::Error: can\'t set settings for printer port")			#
-		self.__host.transmit_req(self.__numChPrinter,[0x1b,0x4d,0x00],3)											# Установка таблицы кодировок принтера
-		
-		if(self.__host.set_settings_port(self.__numChBillValid,14,8)==-1):											# Установка параметров порта купюроприемника
-			raise parkomatError("parkomat.__config_system()::Error: can\'t set settings for bill validator port")	#
-		
+			
+		self.__printer=printer(self.__host,self.__numChPrinter,self.__spdPrinter)									# Создаем экземпляр класса Printer() принтера
+				
 		if(self.__host.transmit_req(6,[0x12,0x02],2)==-1):															# Установка кодировки дисплея см. протокол взаимодействия i2c-uart
-			raise parkomatError("parkomat.__config_system()::Error: can\'t set printer's character table")
+			raise parkomatError("parkomat.__config_system()::Error: can\'t set printer's character table")			# если не удачно формируем исключение ParkomatError 
 
 
 ##############################################################################################################
@@ -145,7 +172,7 @@ class parkomat:
 		print "parkomat.createTicket(self)"																
 
 		self.__ticket=[]																				# обнуление массива хранящего данные чека
-
+		self.ticketID=self.ticketID+1
 		self.__qr=qrcode.QRCode(																		# создаем класс экземпляр класса QRcode для создания qr кода											
 			version=None,																				# поле отвечает за максимальный размер qr кода
 			error_correction=qrcode.constants.ERROR_CORRECT_L,											# поле отвечает за обработку ошибок
@@ -155,22 +182,40 @@ class parkomat:
 		
 		fd=open(self.__ticket_File,"r")																	# Открываем файл чека
 		for line in fd:																					# читаем построчно данные чека
+			line=line.rstrip('\n')																		# удаляем символы переноса строки из всех строчек
+			
 			if(line.find("Налич")!=-1):																	# если строка содержит строку "Налич" 
-				line=line.rstrip('\n ')+str(self.__cash)+"0\n"											# добавляем в конец строки данные внесенных наличных
+				line=line.format(str(self.__cash))														# добавляем в конец строки данные внесенных наличных
 				self.__qr.add_data(line)																# и кодируем строку в qrcode
 				
 			if(line.find("Опл. в ч")!=-1):																# если строка содержит строку "Опл. в ч" 
-				line=line.strip('\n ')+str(self.__hourly_rate)+".00\n"									# добавляем в конец строки данные стоимости услуги в час
+				line=line.format(str(self.__hourly_rate))												# добавляем в конец строки данные стоимости услуги в час
 				self.__qr.add_data(line)																# и кодируем строку в qrcode
 				
 			self.__period=(self.__cash/self.__hourly_rate)												# расчет времени по внесенной сумме
 			if(line.find("Кол. часов")!=-1):															# если строка содержит строку "Кол. часов" 
-				line=line.strip('\n ')+str(self.__period)+"0\n"											# добавляем в конец строки данные времени по внесенной сумме
+				line=line.format(str(self.__period))													# добавляем в конец строки данные времени по внесенной сумме
 				self.__qr.add_data(line)																# и кодируем строку в qrcode
 			
-			line=line.decode('utf_8')																	# преобразование строки из кодировки utf-8
+			if(line.find("Номер чека")!=-1):															# если строка содержит строку "Номер чека" 
+				strTicketId=''																			# преобразуем данные номера чека  к шестисимвольной строке 																
+				for i in range(6-len(str(self.ticketID))):												# и добавляем данные в конец строки 
+					strTicketId=strTicketId+'0'															# и кодируем строку в qrcode
+				strTicketId=strTicketId+str(self.ticketID)												#
+				line=line.format(strTicketId)															# 
+				self.__qr.add_data(line)																# 
+			
+			
+			line=line.decode('utf-8')																	# преобразование строки из кодировки utf-8
 			line=line.encode('koi8-r')																	# в кодировку koi8-r и добавление в масив данных чека 
-			self.__ticket.append(line)																	# self.__ticket[]
+			
+			strData=[]																					# буфер для хранения данных перекодированной строки(PC437)/обнуление 																				
+			for ch in line:																				# читаем строку посимвольно
+				if(ord(ch)<0x80):																		# если байт < 0x80 добавляем в буффер strData
+					strData.append(ord(ch))																# иначе преобразуем к таблице кодировки PC437 [U.S.A.,Standart Europe]
+				else:																					#
+					strData.append(KOI8_R_to_PC865[ord(ch)-0x80])										#
+			self.__ticket.append(strData)																# 
 
 		fd.close()																						# закрываем фаил чека
 		
@@ -226,26 +271,26 @@ class parkomat:
 
 		self.__createTicket()																			# вызов функции формирования данных чека
 		for i in self.__ticket:																			# читаем данные из массива с данными чека построчно
-			self.__tx_buff=[]																			# обнуление tx буффера 
-			print "parkomat.print_ticket()::",i															#
-			
-			for j in i:																					# читаем данные строки посимвольно
-				if(ord(j)<0x80):																		# если байт < 0x80 добавляем в tx буффер 
-					self.__tx_buff.append(ord(j))														# иначе преобразуем к таблице кодировки PC437 [U.S.A.,Standart Europe]
-				else:																					#
-					self.__tx_buff.append(KOI8_R_to_PC865[ord(j)-0x80])									#
-					
-			if(not self.__host.transmit_req(2,self.__tx_buff,len(self.__tx_buff))):						# передаем данные tx буффера в канал принтера
-				print "parkomat.print_ticket()::error transmit request."								# если ошибка возвращаем 0
-				return 0																				#
-				
-		for k in range(len(self.__img_data)):															# читаем и передаем данные qr кода в канал принтера
-			if(not self.__host.transmit_req(2,self.__img_data[k],len(self.__img_data[k]))):				# если ошибка возвращаем 0
-				print "parkomat.print_ticket()::error transmit request."								#
-				return 0																				#
-			self.__host.transmit_req(2,[0x0a],1)														# перенос строки принтера см. протокол взаимодействия i2c-uart и руководство пользователя принтера VKP80
+	
+			if(self.__printer.printData(i)<0):															# передаем данные tx буффера в канал принтера
+				print "parkomat.print_ticket()::Error:	Can\'t print the data ticket"					# если ошибка возвращаем 0
+				return -1																				#
+			if(self.__printer.lineFeed()<0):															# перенос строки принтера см. протокол взаимодействия i2c-uart и руководство пользователя принтера VKP80
+				print "parkomat.print_ticket()::Error: Can\'t  feed the line"							#
+				return -1
 
-		self.__host.transmit_req(2,[0x0c],1)															# обрезка и предоставление чека см. протокол взаимодействия i2c-uart и руководство пользователя принтера VKP80
+
+		for j in self.__img_data:																		# читаем и передаем данные qr кода в канал принтера
+			if(self.__printer.printData(j)<0):															# если ошибка возвращаем 0
+				print "parkomat.print_ticket()::Error: Can\'t print the QRCODE"							#
+				return -1																				#
+			if(self.__printer.lineFeed()<0):															# перенос строки принтера см. протокол взаимодействия i2c-uart и руководство пользователя принтера VKP80
+				print "parkomat.print_ticket()::Error: Can\'t  feed the line"							#
+				return -1	
+				
+		if(self.__printer.formFeed() < 0):																# обрезка и предоставление чека см. протокол взаимодействия i2c-uart и руководство пользователя принтера VKP80
+				print "parkomat.print_ticket()::Error: Can\'t  feed the form"							#
+				return -1	
 		return 1																						# если все нормально возвращаем 1
 
 
@@ -264,11 +309,14 @@ class parkomat:
 			time.sleep(0.2)																				# задержка в 200 мс
 			status=	self.__billvalidator.Poll()															#
 			if(status==-1):																				#
-				self.__billvalidator.sendNAK()															#
-				raise parkomatError('Error in Poll() command')
-			#elif(status=
-			self.__billvalidator.sendACK()																#
+				print 'parkomat.receiving_bills()::Error: CRC is not valid'
+				self.__billvalidator.sendNAK()
+				continue
+			if(status==-2):																				#
+				raise  parkomatError('parkomat.receiving_bills()::Error: Poll command is failed')
 			
+			self.__billvalidator.sendACK()
+
 			if(status==self.__billvalidator.states.Unit_Disabled):										# проверяем статус если disabled даем команду enabled
 				self.__billvalidator.enable(0xff,0xff,0xff,0xff,0xff,0xff)								#
 				
@@ -276,9 +324,20 @@ class parkomat:
 				fl=self.__host.receive_req(6,1,1)														# проверяем не была ли нажата кнопка оплатить
 				if(fl>0):																				#
 					if(fl[0]==0 and fl[3]==ord('D')):													# если была нажата отключаем прием купюр
-						self.__billvalidator.disable()													# присваиваем переменной self.__cash принятую сумму       ??????????????????????????????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-						if(self.__billvalidator.Poll()==-1):											# и возвращаем принятую сумму
+																										#	
+						if(self.__billvalidator.disable()<0):											# 
+							raise parkomatError('Error disable the bill validator')						#
+						
+						res=self.__billvalidator.Poll()													#
+						
+						if(res==-1):																	# и возвращаем принятую сумму
 							self.__billvalidator.sendNAK()												#
+							self.__billvalidator.cursum=0												#
+							return self.__cash															#
+						
+						if(res==-2):																	#
+							raise parkomatError('Poll command is failed')								#		
+						
 						self.__billvalidator.sendACK()													#
 						self.__billvalidator.cursum=0													#
 						return self.__cash	
@@ -320,10 +379,11 @@ class parkomat:
 ##############################################################################################################		
 		
 example=parkomat("./config/config.cfg")
-while(1):
-	example.display('Cтоим.усл.-{}р/ч'.format(example.get_hourly_rate()))
-	if(not example.receiving_bills()):
-		example.display('Внесите налич.\nи нажмите\nклавишу\'ввод\'')
-		time.sleep(3)
-		continue
-	example.print_ticket()
+#while(1):
+	#example.display('Cтоим.усл.-{}р/ч'.format(example.get_hourly_rate()))
+	#if(not example.receiving_bills()):
+	#	example.display('Внесите налич.\nи нажмите\nклавишу\'ввод\'')
+	#	time.sleep(3)
+	#	continue
+print example.numTerm
+example.print_ticket()

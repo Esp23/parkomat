@@ -99,7 +99,7 @@ class i2c_bus:
 		self.__fill_tx_packet(data,size)																											# заполнение пакета
 		for i in range(3):
 
-			if(not self.dl.write_to_i2cbus(self.__tx_buff,self.size_tx_packet)):																	# отправка	данных из self.__tx_buff буффера в шину I2C
+			if(self.dl.write_to_i2cbus(self.__tx_buff,self.size_tx_packet)!=self.size_tx_packet):													# отправка	данных из self.__tx_buff буффера в шину I2C
 				print  "i2c_bus.transaction()::Error sending the data packet."																		#
 				return -1 																															#
 				
@@ -119,7 +119,7 @@ class i2c_bus:
 				self.__count=self.__count+1																											# и возвращаем 1
 				print "/i2c_bus.transaction()>"																										#
 				return 1																															#
-		print "i2c_bus.transaction()>"																												#
+		print "/i2c_bus.transaction()>"																												#
 		return -1 																																	#	
 			
 			
@@ -178,6 +178,10 @@ class i2c_bus:
 
 ################################################################################
 # Функция запроса типа устройства
+# Возвращаемые значения:
+# -1 - Ошибка транзакции команды
+# -2 - Ошибка по протоколу (Протокол взаимодействия мост uart-i2c)
+# лист с данными ответа (Протокол взаимодействия мост uart-i2c)
 ################################################################################	
 
 	def get_device_type(self):
@@ -192,7 +196,7 @@ class i2c_bus:
 			return -1																																#
 			
 		if(self.__answer[3]!=0):																													# если удачно проверяем байт кода ошибки 
-			print 'i2c_bus.get_device_type()::Error code-{}'.format(self.__answer[3])																		# если байт !=0 ошибка возвращаем -1 и выводим код ошибки на экран
+			print 'i2c_bus.get_device_type()::Error code-{}'.format(self.__answer[3])																# если байт !=0 ошибка возвращаем -2 и выводим код ошибки на экран
 			print "/i2c_bus.get_device_type()>"																										# и выводим код ошибки на экран
 			return -2																																# (см. Протокол взаимодействия: Мост i2c-uart)
 		
